@@ -2,10 +2,12 @@ import pygame
 import neat
 
 from grid import Grid
+from snake import Snake
 
 #GLOBAL VARIABLES
 WIN = None
 GRID = None
+SNAKE = None
 
 GRID_SIZE = [25,25]
 
@@ -13,7 +15,7 @@ GRID_SIZE = [25,25]
 
 WINDOW_SIZE = [GRID_SIZE[0] * 24 , GRID_SIZE[0] * 24 ]
 
-print("WINDOW_SIZE: ", WINDOW_SIZE)
+#print("WINDOW_SIZE: ", WINDOW_SIZE)
 
 
 def drawWindow():
@@ -23,12 +25,14 @@ def drawWindow():
     global WIN
     global GRID
     global WINDOW_SIZE
+    global SNAKE
 
     #we draw the background
     backgroundColor = (0,0,0)
     pygame.draw.rect(WIN,backgroundColor,(0,0,WINDOW_SIZE[0], WINDOW_SIZE[1]))
 
     GRID.draw(WIN)
+    SNAKE.draw(WIN)
 
 def GenerateGame():
     """
@@ -42,6 +46,11 @@ def GenerateGame():
     
     global GRID
     GRID = Grid(GRID_SIZE[0],GRID_SIZE[1])
+
+    global SNAKE
+    snake_pos_x = int(round(GRID_SIZE[0] / 2))
+    snake_pos_y = int(round(GRID_SIZE[1] / 2))
+    SNAKE = Snake(snake_pos_x, snake_pos_y)
 
 
 def PlayGame():

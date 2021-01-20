@@ -8,6 +8,14 @@ class Block:
         self.type = type
 
     def draw(self, win):
-        color = (158,158,158)
+        color = (255,255,255)
+        
+        if self.type == "NORMAL":
+            color = (158,158,158)
+        elif self.type == "SNAKE":
+            color = (27, 94, 32)
+        
+        #print("drawing block ", self.type, " ", color, "on pos ", self.x, ",", self.y)
+        
         #20 pixels per block, 2px border at each side (24)
         pygame.draw.rect(win,color,(self.x*24 + 2 , self.y*24 + 2,20,20))
