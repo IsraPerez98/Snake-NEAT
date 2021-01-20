@@ -4,7 +4,7 @@ from block import Block
 
 class Snake:
     def __init__(self,start_posx, start_posy):
-        self.size = 2 # we start with 2 block
+        self.size = 4 # we start with 2 block
         self.directionx = 1 # if we are moving in direction x
         self.directiony = 0 # if we are moving in direction y
         self.futuredirectionx = 1
@@ -56,5 +56,13 @@ class Snake:
         return False
 
 
-    def collideWall(self, block):
-        pass
+    def collideWall(self, grid):
+        """
+        returns True when the snake collides with a wall
+        """
+        for snake_block in self.body:
+            if snake_block.x < 0 or snake_block.y < 0:
+                return True
+            if snake_block.x >= grid.x or snake_block.y >= grid.y:
+                return True
+        return False

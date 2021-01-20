@@ -94,6 +94,10 @@ def PlayGame():
                 if(SNAKE.collideSelf()):
                     print("SNAKE COLLIDED WITH ITSELF")
                     running = False
+                
+                if(SNAKE.collideWall(GRID)):
+                    print("SNAKE COLLIDED WITH WALL")
+                    running = False
         
         #SNAKE.move(clock)
 
