@@ -121,7 +121,7 @@ def PlayGame():
 
     MOVESNAKEEVNT = pygame.USEREVENT
 
-    pygame.time.set_timer(MOVESNAKEEVNT, 60)
+    pygame.time.set_timer(MOVESNAKEEVNT, 70)
 
     while running:
         clock.tick(60)
@@ -175,7 +175,14 @@ def PlayGame():
                     
                     fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 1000
                     print(fitness_increase)
-                    GENOMES[snake_id].fitness += 1
+                    GENOMES[snake_id].fitness += fitness_increase
+
+                    #this is to prevent loops, mouth in last movements, decrease fitness
+                    for block_id in range(1,len(snake.lastMovements)):
+                        previous_block = snake.lastMovements[block_id]
+                        if snake_mouth.x == previous_block.x and snake_mouth.y == previous_block.y:
+                            GENOMES[snake_id].fitness -= 0.5
+
 
                     
                     #inputs for neural net

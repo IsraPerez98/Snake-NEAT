@@ -17,6 +17,9 @@ class Snake:
         for x in range(1): # we start with 1 block
             block = Block(start_posx - x, start_posy, self.color)
             self.body.insert(x, block)
+        
+        self.recordLastMovements = True
+        self.lastMovements = []
     
     def draw(self, win):
         for x in range(len(self.body)):
@@ -34,6 +37,11 @@ class Snake:
             self.body.pop()
         else:
             self.grow = False
+        
+        if self.recordLastMovements:
+            self.lastMovements.insert(0,newBlock)
+            if(len(self.lastMovements) > 50):
+                self.lastMovements.pop()
 
     def changeDirection(self,x,y):
         #if we're moving vertically we can't change direction vertically
