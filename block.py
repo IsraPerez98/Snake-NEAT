@@ -6,6 +6,9 @@ class Block:
         self.x = x
         self.y = y
         self.type = type
+    
+    def __str__(self):
+        return "Block: type: %s, x: %s, y: %s" % (self.type, self.x, self.y)
 
     def draw(self, win):
         color = (255,255,255)
