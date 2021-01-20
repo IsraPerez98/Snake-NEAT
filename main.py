@@ -90,6 +90,10 @@ def PlayGame():
                 quit()
             if event.type == MOVESNAKEEVNT:
                 SNAKE.move()
+
+                if(SNAKE.collideSelf()):
+                    print("SNAKE COLLIDED WITH ITSELF")
+                    running = False
         
         #SNAKE.move(clock)
 
