@@ -2,6 +2,7 @@ import pygame
 import neat
 from random import randrange
 import os
+from math import sqrt
 
 from grid import Grid
 from snake import Snake
@@ -120,13 +121,16 @@ def PlayGame():
 
     MOVESNAKEEVNT = pygame.USEREVENT
 
-    pygame.time.set_timer(MOVESNAKEEVNT, 250)
+    pygame.time.set_timer(MOVESNAKEEVNT, 60)
 
     while running:
         clock.tick(60)
 
         keys = pygame.key.get_pressed()
-        processKeys(keys)
+        #processKeys(keys)
+        if keys[pygame.K_SPACE]:
+            running = False
+            break
 
         if(len(SNAKES)) == 0:
             running = False
@@ -144,28 +148,36 @@ def PlayGame():
                     if(snake.collideSelf()):
                         print("SNAKE COLLIDED WITH ITSELF")
                         #running = False
-                        GENOMES[snake_id].fitness -= 10
+                        GENOMES[snake_id].fitness -= 50
                         deleteSnake(snake_id)
                         break
                 
                     if(snake.collideWall(GRID)):
                         print("SNAKE COLLIDED WITH WALL")
-                        GENOMES[snake_id].fitness -= 10
+                        GENOMES[snake_id].fitness -= 50
                         deleteSnake(snake_id)
                         break
                 
                     if(FOOD.checkCollision(snake)):
                         print("SNAKE ATE THE FOOD")
-                        SNAKE.grow = True
+                        snake.grow = True
                         FOOD = None
                         generateFood()
-                        GENOMES[snake_id].fitness += 50
+                        GENOMES[snake_id].fitness += 5000
                         break
-                    
-                    # if snake is still alive, give them some fitness
-                    GENOMES[snake_id].fitness += 1
-                    
+                        
                     snake_mouth = snake.body[0]
+                    
+                    # if snake is still alive, give them some fitness based on distance to the food
+                    #GENOMES[snake_id].fitness += 1
+                    distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
+                    mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/2
+                    
+                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 1000
+                    print(fitness_increase)
+                    GENOMES[snake_id].fitness += 1
+
+                    
                     #inputs for neural net
                     inputs = []
                     inputs.insert(0,snake_mouth.x) # mouth pos x
@@ -261,7 +273,7 @@ def run(config_file):
     population.add_reporter(stats)
 
     #50 generations
-    winner = population.run(instance,50)
+    winner = population.run(instance,500)
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
