@@ -18,7 +18,7 @@ class Snake:
             block = Block(start_posx - x, start_posy, self.color)
             self.body.insert(x, block)
         
-        self.recordLastMovements = True
+        self.recordLastMovements = False
         self.lastMovements = []
     
     def draw(self, win):

@@ -161,14 +161,14 @@ def PlayGame():
                     if(snake.collideSelf()):
                         print("SNAKE COLLIDED WITH ITSELF")
                         #running = False
-                        GENOMES[snake_id].fitness -= 50
+                        GENOMES[snake_id].fitness -= 1000
                         deleteSnake(snake_id)
                         game_stuck = False
                         break
                 
                     if(snake.collideWall(GRID)):
                         print("SNAKE COLLIDED WITH WALL")
-                        GENOMES[snake_id].fitness -= 50
+                        GENOMES[snake_id].fitness -= 2000
                         deleteSnake(snake_id)
                         game_stuck = False
                         break
@@ -189,15 +189,16 @@ def PlayGame():
                     distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
                     mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/2
                     
-                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 1000
-                    #print(fitness_increase)
+                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 10000
+                    print(fitness_increase)
                     GENOMES[snake_id].fitness += fitness_increase
 
+
                     #this is to prevent loops, mouth in last movements, decrease fitness
-                    for block_id in range(1,len(snake.lastMovements)):
-                        previous_block = snake.lastMovements[block_id]
-                        if snake_mouth.x == previous_block.x and snake_mouth.y == previous_block.y:
-                            GENOMES[snake_id].fitness -= 0.5
+                    #for block_id in range(1,len(snake.lastMovements)):
+                    #    previous_block = snake.lastMovements[block_id]
+                    #    if snake_mouth.x == previous_block.x and snake_mouth.y == previous_block.y:
+                    #        GENOMES[snake_id].fitness -= 0.5
 
 
                     
