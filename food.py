@@ -7,7 +7,8 @@ class Food:
         self.x = x
         self.y = y
 
-        self.block = Block(x,y, "FOOD")
+        self.color = (183,28,28)
+        self.block = Block(x,y, self.color)
     
     def draw(self,win):
         self.block.draw(win)

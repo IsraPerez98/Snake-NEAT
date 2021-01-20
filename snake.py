@@ -1,4 +1,5 @@
 #This is where we define our snake class
+from random import randrange
 
 from block import Block
 
@@ -10,10 +11,11 @@ class Snake:
         self.futuredirectiony = 0
 
         self.grow = True
+        self.color = (randrange(255), randrange(255), randrange(255) )
 
         self.body = []
         for x in range(1): # we start with 1 block
-            block = Block(start_posx - x, start_posy, "SNAKE")
+            block = Block(start_posx - x, start_posy, self.color)
             self.body.insert(x, block)
     
     def draw(self, win):
@@ -22,7 +24,7 @@ class Snake:
     
     def move(self,):
         previousBlock = self.body[0]
-        newBlock = Block(previousBlock.x + self.futuredirectionx, previousBlock.y + self.futuredirectiony, "SNAKE")
+        newBlock = Block(previousBlock.x + self.futuredirectionx, previousBlock.y + self.futuredirectiony, self.color)
         self.body.insert(0,newBlock)
 
         self.directionx = self.futuredirectionx

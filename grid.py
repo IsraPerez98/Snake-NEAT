@@ -8,6 +8,8 @@ class Grid:
         self.x = x
         self.y = y
 
+        self.color = (158,158,158)
+
         self.generateStructure()
 
     def generateStructure(self):
@@ -18,7 +20,7 @@ class Grid:
             structure.insert(x,[])
             for y in range(self.y):
                 #print("generating grid ", x, " ", y)
-                block = Block(x,y, "NORMAL")
+                block = Block(x,y, self.color)
                 structure[x].insert(y, block)
         
         self.structure = structure
