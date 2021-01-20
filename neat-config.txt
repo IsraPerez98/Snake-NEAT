@@ -2,7 +2,7 @@
 [NEAT]
 fitness_criterion     = max
 fitness_threshold     = 100
-pop_size              = 10
+pop_size              = 3
 reset_on_extinction   = False
 
 [DefaultGenome]
@@ -48,10 +48,10 @@ node_delete_prob        = 0.2
 num_hidden              = 0
 #2 inputs for mouth position
 #2 inputs for food position
-#4 inputs for distance from mouth to a wall
+#2 inputs for distance from mouth to wall right and down (left and top are the same as position so not necesary)
 #4 inputs for distance from mouth to a body
-# = 12 inputs
-num_inputs              = 12
+# = 10 inputs
+num_inputs              = 10
 num_outputs             = 4
 
 # node response options
