@@ -133,6 +133,7 @@ def PlayGame():
                 
                 if(FOOD.checkCollision(SNAKE)):
                     print("SNAKE ATE THE FOOD")
+                    SNAKE.grow = True
                     FOOD = None
                     generateFood()
                     break

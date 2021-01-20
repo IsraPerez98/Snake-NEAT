@@ -3,15 +3,16 @@
 from block import Block
 
 class Snake:
-    def __init__(self,start_posx, start_posy):
-        self.size = 4 # we start with 2 block
+    def __init__(self,start_posx, start_posy):    
         self.directionx = 1 # if we are moving in direction x
         self.directiony = 0 # if we are moving in direction y
         self.futuredirectionx = 1
         self.futuredirectiony = 0
 
+        self.grow = True
+
         self.body = []
-        for x in range(self.size):
+        for x in range(1): # we start with 1 block
             block = Block(start_posx - x, start_posy, "SNAKE")
             self.body.insert(x, block)
     
@@ -22,11 +23,15 @@ class Snake:
     def move(self,):
         previousBlock = self.body[0]
         newBlock = Block(previousBlock.x + self.futuredirectionx, previousBlock.y + self.futuredirectiony, "SNAKE")
-        self.body.pop()
         self.body.insert(0,newBlock)
 
         self.directionx = self.futuredirectionx
         self.directiony = self.futuredirectiony
+
+        if not self.grow:
+            self.body.pop()
+        else:
+            self.grow = False
 
     def changeDirection(self,x,y):
         #if we're moving vertically we can't change direction vertically
