@@ -34,10 +34,23 @@ def drawWindow():
     GRID.draw(WIN)
     SNAKE.draw(WIN)
 
+def processKeys(keys):
+    #movement
+    if keys[pygame.K_w]:
+        SNAKE.changeDirection(0,-1)
+    if keys[pygame.K_a]:
+        SNAKE.changeDirection(-1,0)
+    if keys[pygame.K_s]:
+        SNAKE.changeDirection(0, 1)
+    if keys[pygame.K_d]:
+        SNAKE.changeDirection(1, 0)
+    ###
+
 def GenerateGame():
     """
     function to prepare a game to be played
     """
+    pygame.init()
     
     global WIN
     global GRID_SIZE
@@ -60,15 +73,26 @@ def PlayGame():
     clock = pygame.time.Clock()
     running = True
 
+    MOVESNAKEEVNT = pygame.USEREVENT
+
+    pygame.time.set_timer(MOVESNAKEEVNT, 250)
+
     while running:
         clock.tick(60)
+
+        keys = pygame.key.get_pressed()
+        processKeys(keys)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
                 quit()
+            if event.type == MOVESNAKEEVNT:
+                SNAKE.move()
         
+        #SNAKE.move(clock)
+
         drawWindow()
         pygame.display.update()
 
