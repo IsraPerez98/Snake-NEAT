@@ -189,9 +189,11 @@ def PlayGame():
                     distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
                     mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/2
                     
-                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 10000
+                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 700) / 10000
+                    #print(fitness_increase)
                     #print(fitness_increase)
                     GENOMES[snake_id].fitness += fitness_increase
+                    
 
 
                     #this is to prevent loops, mouth in last movements, decrease fitness
