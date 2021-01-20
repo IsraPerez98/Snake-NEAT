@@ -24,6 +24,13 @@ class Snake:
         self.body.insert(0,newBlock)
 
     def changeDirection(self,x,y):
+        #if we're moving vertically we can't change direction vertically
+        #same for horizontal movement
+        if((self.directionx == 1 or self.directionx == -1) and (x == 1 or x == -1 ) ):
+            return
+        if((self.directiony == 1 or self.directiony == -1) and (y == 1 or y == -1 ) ):
+            return
+        
         self.directionx = x
         self.directiony = y
     
