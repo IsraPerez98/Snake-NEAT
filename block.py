@@ -17,6 +17,8 @@ class Block:
             color = (158,158,158)
         elif self.type == "SNAKE":
             color = (27, 94, 32)
+        elif self.type == "FOOD":
+            color= (183,28,28)
         
         #print("drawing block ", self.type, " ", color, "on pos ", self.x, ",", self.y)
         

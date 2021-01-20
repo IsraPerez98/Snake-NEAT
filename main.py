@@ -1,13 +1,17 @@
 import pygame
 import neat
+from random import randrange
 
 from grid import Grid
 from snake import Snake
+from food import Food
+
 
 #GLOBAL VARIABLES
 WIN = None
 GRID = None
 SNAKE = None
+FOOD = None
 
 GRID_SIZE = [25,25]
 
@@ -17,7 +21,6 @@ WINDOW_SIZE = [GRID_SIZE[0] * 24 , GRID_SIZE[0] * 24 ]
 
 #print("WINDOW_SIZE: ", WINDOW_SIZE)
 
-
 def drawWindow():
     """
     function to draw the window and all the game elements
@@ -26,6 +29,7 @@ def drawWindow():
     global GRID
     global WINDOW_SIZE
     global SNAKE
+    global FOOD
 
     #we draw the background
     backgroundColor = (0,0,0)
@@ -33,6 +37,29 @@ def drawWindow():
 
     GRID.draw(WIN)
     SNAKE.draw(WIN)
+    FOOD.draw(WIN)
+
+def generateFood():
+    """
+    function to generate a food unit (if there is none on screen)
+    """
+    global FOOD
+    if FOOD != None:
+        return
+    food_x = randrange(GRID_SIZE[0])
+    food_y = randrange(GRID_SIZE[1])
+
+    global SNAKE
+    colliding_with_snake = False
+    for snake_block in SNAKE.body:
+        if snake_block.x == food_x and snake_block.y == food_y:
+            colliding_with_snake = True
+            break
+    
+    if not colliding_with_snake:
+        FOOD = Food(food_x,food_y)
+    else:
+        return generateFood()
 
 def processKeys(keys):
     #movement
@@ -65,11 +92,14 @@ def GenerateGame():
     snake_pos_y = int(round(GRID_SIZE[1] / 2))
     SNAKE = Snake(snake_pos_x, snake_pos_y)
 
+    generateFood()
+
 
 def PlayGame():
     """
     function to play a game
     """
+    global FOOD
     clock = pygame.time.Clock()
     running = True
 
@@ -94,10 +124,19 @@ def PlayGame():
                 if(SNAKE.collideSelf()):
                     print("SNAKE COLLIDED WITH ITSELF")
                     running = False
+                    break
                 
                 if(SNAKE.collideWall(GRID)):
                     print("SNAKE COLLIDED WITH WALL")
                     running = False
+                    break
+                
+                if(FOOD.checkCollision(SNAKE)):
+                    print("SNAKE ATE THE FOOD")
+                    FOOD = None
+                    generateFood()
+                    break
+
         
         #SNAKE.move(clock)
 
