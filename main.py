@@ -104,18 +104,19 @@ def GenerateGame():
 
     generateFood()
 
-def deleteSnake(index):
-    SNAKES.pop(index)
-    NETS.pop(index)
-    GENOMES.pop(index)
+def deleteSnake(index, snakes, networks, genomes):
+    snakes.pop(index)
+    networks.pop(index)
+    genomes.pop(index)
 
 
-def PlayGame(mov_speed):
+def PlayGame(mov_speed, snakes, networks, genomes, training=True):
     """
     function to play a game
     """
     global FOOD
-    global GENOMES
+    global GRID_SIZE
+
     clock = pygame.time.Clock()
     running = True
     game_stuck = False
@@ -135,7 +136,7 @@ def PlayGame(mov_speed):
             running = False
             break
 
-        if(len(SNAKES)) == 0:
+        if(len(snakes)) == 0:
             running = False
             break
 
@@ -149,30 +150,34 @@ def PlayGame(mov_speed):
                 print("checking if game is stuck...")
                 if game_stuck:
                     print("game is stuck, ending...")
-                    for snake_id, snake in enumerate(SNAKES):
-                        GENOMES[snake_id].fitness -= 500
-                        deleteSnake(snake_id)
+                    for snake_id, snake in enumerate(snakes):
+                        if training:
+                            genomes[snake_id].fitness -= 500
+                        deleteSnake(snake_id,snakes,networks,genomes)
                     running = False
                     break
                 else:
                     game_stuck = True
+                break
             
             if event.type == MOVESNAKEEVNT:
-                for snake_id, snake in enumerate(SNAKES):
+                for snake_id, snake in enumerate(snakes):
                     snake.move()
 
                     if(snake.collideSelf()):
                         print("SNAKE COLLIDED WITH ITSELF")
                         #running = False
-                        GENOMES[snake_id].fitness -= 5000
-                        deleteSnake(snake_id)
+                        if training:
+                            genomes[snake_id].fitness -= 5000
+                        deleteSnake(snake_id,snakes,networks,genomes)
                         game_stuck = False
                         break
                 
                     if(snake.collideWall(GRID)):
                         #print("SNAKE COLLIDED WITH WALL")
-                        GENOMES[snake_id].fitness -= 7000
-                        deleteSnake(snake_id)
+                        if training:
+                            genomes[snake_id].fitness -= 7000
+                        deleteSnake(snake_id, snakes, networks, genomes)
                         game_stuck = False
                         break
                 
@@ -181,21 +186,23 @@ def PlayGame(mov_speed):
                         snake.grow = True
                         FOOD = None
                         generateFood()
-                        GENOMES[snake_id].fitness += 5000
+                        if training:
+                            genomes[snake_id].fitness += 5000
                         game_stuck = False
                         break
                         
                     snake_mouth = snake.body[0]
                     
-                    # if snake is still alive, give them some fitness based on distance to the food
-                    #GENOMES[snake_id].fitness += 1
-                    distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
-                    mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/4
-                    
-                    fitness_increase = ((mid_dist_sqrd - distance_sqrd)) / 500
-                    #print(fitness_increase)
-                    #print(fitness_increase)
-                    GENOMES[snake_id].fitness += fitness_increase
+                    if training:
+                        # if snake is still alive, give them some fitness based on distance to the food
+                        #GENOMES[snake_id].fitness += 1
+                        distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
+                        mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/4
+
+                        fitness_increase = ((mid_dist_sqrd - distance_sqrd)) / 500
+                        #print(fitness_increase)
+                        #print(fitness_increase)
+                        genomes[snake_id].fitness += fitness_increase
 
                     
                     #inputs for neural net
@@ -245,7 +252,7 @@ def PlayGame(mov_speed):
 
                     #outputs of net
                     #ugly, i know :(
-                    outputs = NETS[snake_id].activate((inputs[0],inputs[1],inputs[2],inputs[3],inputs[4],inputs[5],inputs[6],inputs[7],inputs[8],inputs[9], inputs[10], inputs[11]))
+                    outputs = networks[snake_id].activate((inputs[0],inputs[1],inputs[2],inputs[3],inputs[4],inputs[5],inputs[6],inputs[7],inputs[8],inputs[9], inputs[10], inputs[11]))
                     #outputs = NETS[snake_id].activate((inputs[0],inputs[1],inputs[2],inputs[3],inputs[4],inputs[5],inputs[6],inputs[7],inputs[8],inputs[9]))
 
                     if outputs[0] > 0.5: #up
@@ -256,6 +263,7 @@ def PlayGame(mov_speed):
                         snake.changeDirection(0, 1)
                     if outputs[3] > 0.5: #right
                         snake.changeDirection(1, 0)
+                break
             
                 
 
@@ -287,7 +295,7 @@ def instance(genomes,config):
         genome.fitness = 0
         GENOMES.append(genome)
     
-    PlayGame(40)
+    PlayGame(40, SNAKES, NETS, GENOMES, training=True)
     
 
 
