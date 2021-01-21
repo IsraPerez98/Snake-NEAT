@@ -65,12 +65,16 @@ def generateFood():
     global SNAKES
     colliding_with_snake = False
     for snake in SNAKES:
-        for snake_block in snake.body:
-            if snake_block.x == food_x and snake_block.y == food_y:
-                colliding_with_snake = True
-                break
-        if colliding_with_snake:
+        snake_mouth = snake.body[0]
+        if (snake_mouth.x == food_x) and (snake_mouth.y == food_y):
+            colliding_with_snake = True
             break
+        #for snake_block in snake.body:
+        #    if snake_block.x == food_x and snake_block.y == food_y:
+        #        colliding_with_snake = True
+        #        break
+        #if colliding_with_snake:
+        #    break
 
     
     if not colliding_with_snake:
