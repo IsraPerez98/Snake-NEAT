@@ -123,8 +123,8 @@ def PlayGame():
     MOVESNAKEEVNT = pygame.USEREVENT + 0 
     CHECKGAMESTUCK = pygame.USEREVENT + 1
 
-    pygame.time.set_timer(CHECKGAMESTUCK, 10000)
-    pygame.time.set_timer(MOVESNAKEEVNT, 80)
+    pygame.time.set_timer(CHECKGAMESTUCK, 5000)
+    pygame.time.set_timer(MOVESNAKEEVNT, 20)
 
     while running:
         clock.tick(60)
@@ -146,9 +146,12 @@ def PlayGame():
                 quit()
             if event.type == CHECKGAMESTUCK:
                 #if no significant actions have taken place in the last x seconds, we reset the game
-                print("checking if game is stuck")
+                print("checking if game is stuck...")
                 if game_stuck:
-                    print("game is stuck, restarting...")
+                    print("game is stuck, ending...")
+                    for snake_id, snake in enumerate(SNAKES):
+                        GENOMES[snake_id].fitness -= 500
+                        deleteSnake(snake_id)
                     running = False
                     break
                 else:
@@ -167,7 +170,7 @@ def PlayGame():
                         break
                 
                     if(snake.collideWall(GRID)):
-                        print("SNAKE COLLIDED WITH WALL")
+                        #print("SNAKE COLLIDED WITH WALL")
                         GENOMES[snake_id].fitness -= 2000
                         deleteSnake(snake_id)
                         game_stuck = False
@@ -189,7 +192,7 @@ def PlayGame():
                     distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
                     mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/2
                     
-                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 700) / 10000
+                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 1000
                     #print(fitness_increase)
                     #print(fitness_increase)
                     GENOMES[snake_id].fitness += fitness_increase
