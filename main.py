@@ -150,7 +150,7 @@ def PlayGame():
                 if game_stuck:
                     print("game is stuck, ending...")
                     for snake_id, snake in enumerate(SNAKES):
-                        GENOMES[snake_id].fitness -= 100
+                        GENOMES[snake_id].fitness -= 500
                         deleteSnake(snake_id)
                     running = False
                     break
@@ -164,14 +164,14 @@ def PlayGame():
                     if(snake.collideSelf()):
                         print("SNAKE COLLIDED WITH ITSELF")
                         #running = False
-                        GENOMES[snake_id].fitness -= 1000
+                        GENOMES[snake_id].fitness -= 5000
                         deleteSnake(snake_id)
                         game_stuck = False
                         break
                 
                     if(snake.collideWall(GRID)):
                         #print("SNAKE COLLIDED WITH WALL")
-                        GENOMES[snake_id].fitness -= 2000
+                        GENOMES[snake_id].fitness -= 7000
                         deleteSnake(snake_id)
                         game_stuck = False
                         break
