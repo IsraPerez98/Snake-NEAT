@@ -161,7 +161,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
             running = False
             break
 
-        if time_elapsed_since_action > (mov_speed * 100):
+        if time_elapsed_since_action > (mov_speed * 150):
         #if no significant actions have taken place in the last x seconds, we reset the game
             print("GAME IS STUCK, ENDING ...")
             for snake_id, snake in enumerate(snakes):
@@ -181,7 +181,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                     print("SNAKE COLLIDED WITH ITSELF")
                     #running = False
                     if training:
-                        genomes[snake_id].fitness -= 5000
+                        genomes[snake_id].fitness -= 2000
                     deleteSnake(snake_id,snakes,networks,genomes)
                     time_elapsed_since_action = 0
                     continue
@@ -189,7 +189,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                 if(snake.collideWall(GRID)):
                     #print("SNAKE COLLIDED WITH WALL")
                     if training:
-                        genomes[snake_id].fitness -= 7000
+                        genomes[snake_id].fitness -= 3000
                     deleteSnake(snake_id, snakes, networks, genomes)
                     time_elapsed_since_action = 0
                     continue
