@@ -123,8 +123,8 @@ def PlayGame():
     MOVESNAKEEVNT = pygame.USEREVENT + 0 
     CHECKGAMESTUCK = pygame.USEREVENT + 1
 
-    pygame.time.set_timer(CHECKGAMESTUCK, 5000)
-    pygame.time.set_timer(MOVESNAKEEVNT, 20)
+    pygame.time.set_timer(CHECKGAMESTUCK, 6000)
+    pygame.time.set_timer(MOVESNAKEEVNT, 50)
 
     while running:
         clock.tick(60)
@@ -150,7 +150,7 @@ def PlayGame():
                 if game_stuck:
                     print("game is stuck, ending...")
                     for snake_id, snake in enumerate(SNAKES):
-                        GENOMES[snake_id].fitness -= 500
+                        GENOMES[snake_id].fitness -= 100
                         deleteSnake(snake_id)
                     running = False
                     break
@@ -209,46 +209,53 @@ def PlayGame():
                     
                     #inputs for neural net
                     inputs = []
+                    #distance to left wall
                     inputs.insert(0,snake_mouth.x) # mouth pos x
-                    inputs.insert(1, snake_mouth.y) # mouth pos y
-                    inputs.insert(2, FOOD.x) #food pos x
-                    inputs.insert(3, FOOD.y) #food pos y
                     #distance to wall right
-                    inputs.insert(4, GRID_SIZE[0] - snake_mouth.x)
+                    inputs.insert(1, GRID_SIZE[0] - snake_mouth.x)
+                    #distance to top wall
+                    inputs.insert(2, snake_mouth.y) # mouth pos y
+                    #inputs.insert(2, FOOD.x) #food pos x
+                    #inputs.insert(3, FOOD.y) #food pos y
                     #distance to wall bottom
-                    inputs.insert(5, GRID_SIZE[1] - snake_mouth.y)
+                    inputs.insert(3, GRID_SIZE[1] - snake_mouth.y)
                     #distance to body left
-                    inputs.insert(6, snake_mouth.x)
+                    inputs.insert(4, snake_mouth.x)
                     for i in range(1,len(snake.body)):
                         block = snake.body[i]
                         if (block.y == snake_mouth.y) and (block.x < snake_mouth.x):
-                            inputs[6] = snake_mouth.x - block.x
+                            inputs[4] = snake_mouth.x - block.x
                     #distance to body right
-                    inputs.insert(7, GRID_SIZE[0] - snake_mouth.x)
+                    inputs.insert(5, GRID_SIZE[0] - snake_mouth.x)
                     for i in range(1,len(snake.body)):
                         block = snake.body[i]
                         if (block.y == snake_mouth.y) and (block.x > snake_mouth.x):
-                            inputs[7] =  block.x - snake_mouth.y
+                            inputs[5] =  block.x - snake_mouth.y
                     #distance to body top
-                    inputs.insert(8, snake_mouth.y)
+                    inputs.insert(6, snake_mouth.y)
                     for i in range(1,len(snake.body)):
                         block = snake.body[i]
                         if (block.x == snake_mouth.x) and (block.y < snake_mouth.y):
-                            inputs[8] =  snake_mouth.y - block.y
+                            inputs[6] =  snake_mouth.y - block.y
                     #distance to body bottom
-                    inputs.insert(9, GRID_SIZE[1] - snake_mouth.y)
+                    inputs.insert(7, GRID_SIZE[1] - snake_mouth.y)
                     for i in range(1,len(snake.body)):
                         block = snake.body[i]
                         if (block.x == snake_mouth.x) and (block.y > snake_mouth.y):
-                            inputs[9] =  block.y - snake_mouth.y
-                    #x distance to food
-                    inputs.insert(10, snake_mouth.x - FOOD.x )
-                    #y distance to food
+                            inputs[7] =  block.y - snake_mouth.y
+                    #left distance to food
+                    inputs.insert(8, snake_mouth.x - FOOD.x )
+                    #right distance to food
+                    inputs.insert(9, FOOD.x - snake_mouth.x )
+                    #top distance to food
+                    inputs.insert(10, snake_mouth.y - FOOD.y )
+                    #bottom distance to food
                     inputs.insert(11, snake_mouth.y - FOOD.y )
 
                     #outputs of net
                     #ugly, i know :(
                     outputs = NETS[snake_id].activate((inputs[0],inputs[1],inputs[2],inputs[3],inputs[4],inputs[5],inputs[6],inputs[7],inputs[8],inputs[9], inputs[10], inputs[11]))
+                    #outputs = NETS[snake_id].activate((inputs[0],inputs[1],inputs[2],inputs[3],inputs[4],inputs[5],inputs[6],inputs[7],inputs[8],inputs[9]))
 
                     if outputs[0] > 0.5: #up
                         snake.changeDirection(0,-1)

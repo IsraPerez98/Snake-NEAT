@@ -46,12 +46,10 @@ node_delete_prob        = 0.2
 
 # network parameters
 num_hidden              = 0
-#2 inputs for mouth position
-#2 inputs for food position
-#2 inputs for distance from mouth to wall right and down (left and top are the same as position so not necesary)
+#4 inputs for distance from mouth to wall left right top and down
 #4 inputs for distance from mouth to body
-#2 inputs distance to mouth (x and y)
-# = 12 inputs
+#4 inputs distance to food (left right top bottom)
+# = 10 inputs
 num_inputs              = 12
 num_outputs             = 4
 
