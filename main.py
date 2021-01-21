@@ -147,6 +147,9 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
         keys = pygame.key.get_pressed()
         #processKeys(keys)
         if keys[pygame.K_SPACE]:
+            for snake_id, snake in enumerate(snakes):
+                deleteSnake(snake_id,snakes,networks,genomes)
+            time_elapsed_since_action = 0
             running = False
             break
 
@@ -177,7 +180,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                         genomes[snake_id].fitness -= 5000
                     deleteSnake(snake_id,snakes,networks,genomes)
                     time_elapsed_since_action = 0
-                    break
+                    continue
                 
                 if(snake.collideWall(GRID)):
                     #print("SNAKE COLLIDED WITH WALL")
@@ -185,7 +188,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                         genomes[snake_id].fitness -= 7000
                     deleteSnake(snake_id, snakes, networks, genomes)
                     time_elapsed_since_action = 0
-                    break
+                    continue
                 
                 if(FOOD.checkCollision(snake)):
                     print("SNAKE ATE THE FOOD")
@@ -195,7 +198,6 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                     if training:
                         genomes[snake_id].fitness += 5000
                     time_elapsed_since_action = 0
-                    break
                         
                 snake_mouth = snake.body[0]
                 
