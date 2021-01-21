@@ -75,9 +75,14 @@ class Snake:
         """
         returns True when the snake collides with a wall
         """
-        for snake_block in self.body:
-            if snake_block.x < 0 or snake_block.y < 0:
-                return True
-            if snake_block.x >= grid.x or snake_block.y >= grid.y:
-                return True
+        #for snake_block in self.body:
+        #    if snake_block.x < 0 or snake_block.y < 0:
+        #        return True
+        #    if snake_block.x >= grid.x or snake_block.y >= grid.y:
+        #        return True
+        snake_mouth = self.body[0]
+        if snake_mouth.x < 0 or snake_mouth.y < 0:
+            return True
+        if snake_mouth.x >= grid.x or snake_mouth.y >= grid.y:
+            return True
         return False
