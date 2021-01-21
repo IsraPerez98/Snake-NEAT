@@ -110,7 +110,7 @@ def deleteSnake(index):
     GENOMES.pop(index)
 
 
-def PlayGame():
+def PlayGame(mov_speed):
     """
     function to play a game
     """
@@ -123,8 +123,8 @@ def PlayGame():
     MOVESNAKEEVNT = pygame.USEREVENT + 0 
     CHECKGAMESTUCK = pygame.USEREVENT + 1
 
-    pygame.time.set_timer(CHECKGAMESTUCK, 10000)
-    pygame.time.set_timer(MOVESNAKEEVNT, 40)
+    pygame.time.set_timer(CHECKGAMESTUCK, mov_speed * 100)
+    pygame.time.set_timer(MOVESNAKEEVNT, mov_speed)
 
     while running:
         clock.tick(60)
@@ -287,7 +287,7 @@ def instance(genomes,config):
         genome.fitness = 0
         GENOMES.append(genome)
     
-    PlayGame()
+    PlayGame(40)
     
 
 
