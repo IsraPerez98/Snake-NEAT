@@ -221,13 +221,13 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                 #distance to left wall
                 inputs.insert(0,snake_mouth.x) # mouth pos x
                 #distance to wall right
-                inputs.insert(1, GRID_SIZE[0] - snake_mouth.x)
+                inputs.insert(1, GRID_SIZE[0] - 1 - snake_mouth.x)
                 #distance to top wall
                 inputs.insert(2, snake_mouth.y) # mouth pos y
                 #inputs.insert(2, FOOD.x) #food pos x
                 #inputs.insert(3, FOOD.y) #food pos y
                 #distance to wall bottom
-                inputs.insert(3, GRID_SIZE[1] - snake_mouth.y)
+                inputs.insert(3, GRID_SIZE[1] - 1 - snake_mouth.y)
                 #distance to body left
                 inputs.insert(4, snake_mouth.x)
                 for i in range(1,len(snake.body)):
@@ -235,7 +235,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                     if (block.y == snake_mouth.y) and (block.x < snake_mouth.x):
                         inputs[4] = snake_mouth.x - block.x
                 #distance to body right
-                inputs.insert(5, GRID_SIZE[0] - snake_mouth.x)
+                inputs.insert(5, GRID_SIZE[0] -1 - snake_mouth.x)
                 for i in range(1,len(snake.body)):
                     block = snake.body[i]
                     if (block.y == snake_mouth.y) and (block.x > snake_mouth.x):
@@ -247,7 +247,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                     if (block.x == snake_mouth.x) and (block.y < snake_mouth.y):
                         inputs[6] =  snake_mouth.y - block.y
                 #distance to body bottom
-                inputs.insert(7, GRID_SIZE[1] - snake_mouth.y)
+                inputs.insert(7, GRID_SIZE[1] - 1 - snake_mouth.y)
                 for i in range(1,len(snake.body)):
                     block = snake.body[i]
                     if (block.x == snake_mouth.x) and (block.y > snake_mouth.y):
