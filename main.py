@@ -123,8 +123,8 @@ def PlayGame():
     MOVESNAKEEVNT = pygame.USEREVENT + 0 
     CHECKGAMESTUCK = pygame.USEREVENT + 1
 
-    pygame.time.set_timer(CHECKGAMESTUCK, 6000)
-    pygame.time.set_timer(MOVESNAKEEVNT, 50)
+    pygame.time.set_timer(CHECKGAMESTUCK, 10000)
+    pygame.time.set_timer(MOVESNAKEEVNT, 40)
 
     while running:
         clock.tick(60)
@@ -190,21 +190,12 @@ def PlayGame():
                     # if snake is still alive, give them some fitness based on distance to the food
                     #GENOMES[snake_id].fitness += 1
                     distance_sqrd = (snake_mouth.x - FOOD.x) ** 2 + (snake_mouth.y - FOOD.y) ** 2
-                    mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/2
+                    mid_dist_sqrd = ((GRID_SIZE[0] ** 2) + (GRID_SIZE[1] ** 2))/4
                     
-                    fitness_increase = ((mid_dist_sqrd - distance_sqrd) - 500) / 1000
+                    fitness_increase = ((mid_dist_sqrd - distance_sqrd)) / 500
                     #print(fitness_increase)
                     #print(fitness_increase)
                     GENOMES[snake_id].fitness += fitness_increase
-                    
-
-
-                    #this is to prevent loops, mouth in last movements, decrease fitness
-                    #for block_id in range(1,len(snake.lastMovements)):
-                    #    previous_block = snake.lastMovements[block_id]
-                    #    if snake_mouth.x == previous_block.x and snake_mouth.y == previous_block.y:
-                    #        GENOMES[snake_id].fitness -= 0.5
-
 
                     
                     #inputs for neural net
