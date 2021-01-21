@@ -57,8 +57,8 @@ def generateFood():
     function to generate a food unit (if there is none on screen)
     """
     global FOOD
-    if FOOD != None:
-        return
+    #if FOOD != None:
+    #    return
     food_x = randrange(GRID_SIZE[0])
     food_y = randrange(GRID_SIZE[1])
 
