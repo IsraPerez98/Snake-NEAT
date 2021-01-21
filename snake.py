@@ -58,15 +58,21 @@ class Snake:
         """
         returns True when the snake collides with itself
         """
-        for block_a_index in range(len(self.body)):
-            block_a = self.body[block_a_index]
+        #for block_a_index in range(len(self.body)):
+        #    block_a = self.body[block_a_index]
 
-            for block_b_index in range(block_a_index + 1,len(self.body)):
-                block_b = self.body[block_b_index]
-                if (block_a.x == block_b.x) and (block_a.y == block_b.y):
+        #    for block_b_index in range(block_a_index + 1,len(self.body)):
+        #        block_b = self.body[block_b_index]
+        #        if (block_a.x == block_b.x) and (block_a.y == block_b.y):
                     #print(block_a)
                     #print(block_b)
-                    return True
+        #            return True
+
+        snake_mouth = self.body[0]
+        for block_index in range(1,len(self.body)):
+            block = self.body[block_index]
+            if(snake_mouth.x == block.x) and (snake_mouth.y == block.y):
+                return True
         
         return False
 
