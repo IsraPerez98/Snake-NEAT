@@ -130,7 +130,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
 
     clock = pygame.time.Clock()
     running = True
-    game_stuck = False
+    #game_stuck = False
 
     #MOVESNAKEEVNT = pygame.USEREVENT + 0 
     #CHECKGAMESTUCK = pygame.USEREVENT + 1
@@ -161,12 +161,12 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
             running = False
             break
 
-        if time_elapsed_since_action > (mov_speed * 150):
+        if time_elapsed_since_action > (mov_speed * 250):
         #if no significant actions have taken place in the last x seconds, we reset the game
             print("GAME IS STUCK, ENDING ...")
             for snake_id, snake in enumerate(snakes):
                 if training:
-                    genomes[snake_id].fitness -= 500
+                    genomes[snake_id].fitness -= 1000
                 deleteSnake(snake_id,snakes,networks,genomes)
                 running = False
                 time_elapsed_since_action = 0
@@ -197,7 +197,7 @@ def PlayGame(mov_speed, snakes, networks, genomes, training=True):
                 if(FOOD.checkCollision(snake)):
                     print("SNAKE ATE THE FOOD")
                     snake.grow = True
-                    FOOD = None
+                    #FOOD = None
                     generateFood()
                     if training:
                         genomes[snake_id].fitness += 5000
@@ -323,7 +323,7 @@ def instance(genomes,config):
         best_network = neat.nn.FeedForwardNetwork.create(best_genome, config)
         best_snake = Snake(snake_pos_x, snake_pos_y)
         
-        PlayGame(150, [best_snake], [best_network], [best_genome], training=False)
+        PlayGame(110, [best_snake], [best_network], [best_genome], training=False)
 
         games_until_show = SHOW_AFTER_GENERATIONS
     
