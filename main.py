@@ -319,6 +319,7 @@ def instance(genomes,config):
     games_until_show -= 1
     if(games_until_show < 1 and POPULATION.best_genome):
         print("SHOWING BEST SNAKE ALONE")
+        GenerateGame()
         best_genome = POPULATION.best_genome
         best_network = neat.nn.FeedForwardNetwork.create(best_genome, config)
         best_snake = Snake(snake_pos_x, snake_pos_y)
